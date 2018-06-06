@@ -1,0 +1,282 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+
+
+% \cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\fi
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\pdf_quoted_options "pagebackref=true,letterpaper=true,colorlinks"
+\papersize letterpaper
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 2
+\papersides 1
+\paperpagestyle empty
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Kalman Filter + Manifolds + Pose Estimation + Deep Learning
+\end_layout
+
+\begin_layout Author
+Johan Mathe
+\begin_inset Newline newline
+\end_inset
+
+ Froglabs
+\begin_inset Newline newline
+\end_inset
+
+ Institution1 address
+\begin_inset Newline newline
+\end_inset
+
+ 
+\family typewriter
+\size small
+firstauthor@i1.org
+\family default
+ 
+\end_layout
+
+\begin_layout Author
+
+\size small
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+and
+\end_layout
+
+\end_inset
+
+ Nina Miolane
+\begin_inset Newline newline
+\end_inset
+
+ Stanford University
+\begin_inset Newline newline
+\end_inset
+
+miolane@stanford.edu
+\end_layout
+
+\begin_layout Abstract
+Train a neural network for pose estimation with Kalman filtering.
+ 
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The intro
+\end_layout
+
+\begin_layout Standard
+Keywords:
+\end_layout
+
+\begin_layout Standard
+Kalman Filter 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Author"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Manifolds
+\end_layout
+
+\begin_layout Standard
+Pose Estimation
+\end_layout
+
+\begin_layout Standard
+Deep Learning
+\end_layout
+
+\begin_layout Section
+Kalman Filter Formulation
+\end_layout
+
+\begin_layout Subsection
+Model Definition
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x[k+1]=Ax_{k}+Bu_{k}+w_{k}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+x[k+1] & = & Ax_{k}+Bu_{k}+w_{k}\\
+y[k] & = & Cx_{k}+v_{k}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Time update
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\tilde{x}_{k} & = & A\hat{x}_{k-1}+Bu_{k}\\
+\tilde{P}_{k} & = & AP_{k-1}A^{T}+Q
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Measurement update
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+K_{k} & = & \tilde{P}C^{T}(CP_{k}C^{T}+R)^{-1}\\
+\hat{x}_{k} & = & \tilde{x}+K_{k}(y_{k}-C\tilde{x}_{k})\\
+P_{k} & = & (I-K_{k}C)\tilde{P_{k}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Manifold
+\end_layout
+
+\begin_layout Standard
+
+\size small
+ 
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "egbib"
+options "ieee"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_body
+\end_document
